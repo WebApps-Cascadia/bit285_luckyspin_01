@@ -2,11 +2,12 @@
 
 /* Install Services using the builder.Services methods
  *  TODO: use the AddControllers method to enable controllers
- */  
+ */
+
+builder.Services.AddControllers();
 
 //Builds the app with the added services
 var app = builder.Build();
-
 
 /* Configure Middleware in the HTTP Request Pipeline
    • "UseStaticFiles" to recognizste static folders and files in the wwwroot directory
@@ -14,6 +15,7 @@ var app = builder.Build();
    • "UseExceptionHandler" to provide a default error page when not in development
  */
 app.UseStaticFiles();
+app.UseRouting();
 
 if (!app.Environment.IsDevelopment()) {
     app.UseExceptionHandler("/Spinner/Error");
@@ -26,13 +28,14 @@ if (!app.Environment.IsDevelopment()) {
  */
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action}/{luck}",
+    pattern: "{controller}/{action}/{luck:range(0,9)}",
     defaults: new
     {
         controller = "Spinner",
         action = "Index",
         luck = 7
     });
+
 
 app.Run();
 
