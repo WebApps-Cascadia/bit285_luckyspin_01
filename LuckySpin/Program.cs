@@ -2,7 +2,9 @@
 
 /* Install Services using the builder.Services methods
  *  TODO: use the AddControllers method to enable controllers
- */  
+ */
+
+builder.Services.AddControllers();
 
 //Builds the app with the added services
 var app = builder.Build();
@@ -13,9 +15,14 @@ var app = builder.Build();
    • TODO: add "UseRouting" to recognize custom "Routes" in place of folders and files
    • "UseExceptionHandler" to provide a default error page when not in development
  */
-app.UseStaticFiles();
 
-if (!app.Environment.IsDevelopment()) {
+app.UseRouting();
+
+app.UseStaticFiles(
+    );
+
+if (!app.Environment.IsDevelopment())
+{
     app.UseExceptionHandler("/Spinner/Error");
 }
 
@@ -26,13 +33,12 @@ if (!app.Environment.IsDevelopment()) {
  */
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action}/{luck}",
+    pattern: "{controller}/{action}/{luck:range(1,9)}",
     defaults: new
     {
         controller = "Spinner",
         action = "Index",
-        luck = 7
+        luck = 7,
     });
 
 app.Run();
-
